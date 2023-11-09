@@ -24,34 +24,13 @@ class kalkaalHospitals extends StatefulWidget {
 }
 
 class _kalkaalHospitalsState extends State<kalkaalHospitals> {
+
   List<HospitalModel> hospitalList = [];
-
-  Future<void> getHospitalData() async {
-    //create function in list type becoze we get data and set in _product array
-    var response = await http.get(Uri.parse('http://192.168.1.6:8080/Hospital/GetHospitalData.php'));
-
-try{
-  if (response.statusCode == 200) {
-    debugPrint("Api is Working !");
-    var prJson = json.decode(response.body);
-    //Mistake Identify Here
-
-    for (var jsonData in prJson) {
-      hospitalList.add(HospitalModel.fromJson(json.decode(response.body))); //set json data in productlist
-      print(hospitalList.length);
-    }
-  } else {
-    debugPrint("Api is not Working !");
-  }
-}catch(e){print("Error"+e.toString());}
-
-
-  }
 
 
   List<dynamic> data=[];
   var networkImage;
-  Future<List<dynamic>> fetchDataFromAPI() async {
+  Future<List<dynamic>> fetchHospitalData() async {
     var response = await http.get(Uri.parse('http://192.168.1.6:8080/Hospital/GetHospitalData.php'));
 
     if (response.statusCode == 200) {
@@ -60,9 +39,13 @@ try{
       print(data);
       for (var item in data) {
         setState(() {
-          networkImage=item['name'];
+          networkImage=item['imageName'];
           print("===========================================");
         });
+
+        for(int i=0;i<data.length;i++)
+
+
 
         print(item['name']);
       }
@@ -76,7 +59,7 @@ try{
 
 
   void initState(){
-    fetchDataFromAPI();
+    fetchHospitalData();
 
     super.initState();
   }
@@ -102,9 +85,7 @@ try{
         ),
         body: Column(
           children: [
-            for (var item in data)
 
-              Image.network("http://192.168.1.6:8080/Hospital/"+item['name']),
 
             Padding(
               padding: EdgeInsets.only(top: 30),
@@ -422,6 +403,113 @@ try{
                 ),
               ),
             ),
+            //----------------------Heres My code my Start
+            for (var item in data)
+              Column(children: [
+                const SizedBox(height: 10,),
+                Material(
+                  color: Colors.white,
+
+                  borderRadius: BorderRadius.circular(10),
+                  child: InkWell(
+                    onTap: () {
+                      Get.to(Alihsaan3());
+                    },
+                    borderRadius: BorderRadius.circular(10),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: 90,
+                      decoration: BoxDecoration(
+                        // border: Border.all(color: Colors.grey, width: 2),
+
+                        borderRadius: BorderRadius.circular(10),
+
+
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 100,
+                            height: 120,
+                            decoration: BoxDecoration(
+
+                              borderRadius: BorderRadius.circular(10),
+                              // boxShadow: [
+                              //   BoxShadow(
+                              //     color: Colors.grey,
+                              //     blurRadius: 1,
+                              //     spreadRadius: 1,
+                              //     offset: Offset(2,2),
+                              //   ),
+                              // ],
+                            ),
+
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: Image.network("http://192.168.1.6:8080/Hospital/"+item['imageName']),
+                            ),
+
+
+                          ),
+
+                          const SizedBox(width: 15),
+                        Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const SizedBox(height: 5),
+                                Text(
+                                  item['hospitalName'],
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 20, fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.location_on,color: Colors.blue,size: 20,
+                                    ),
+                                    Text(
+                                      item['address']+","+item['city'],style: GoogleFonts.poppins(fontSize: 11,color: Colors.blue),
+
+                                      textAlign: TextAlign.start,
+                                    ),
+                                  ],
+
+                                ),
+                                const SizedBox(height: 5),
+                                // Container(
+                                //   width: double.infinity,
+                                //   child: Row(
+                                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                //     children: [
+                                //       IconButton(
+                                //         onPressed: () {},
+                                //         icon: Icon(
+                                //           Icons.health_and_safety,
+                                //           color: Colors.red,
+                                //         ),
+                                //       ),
+                                //     ],
+                                //   ),
+                                // ),
+                                const SizedBox(height: 4),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+
+              ],),
+
+
+
+
           ],
         ),
 

@@ -7,9 +7,13 @@ import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:http/http.dart' as http;
+
+import 'kalkaalist.dart';
 
 class HospitalList extends StatefulWidget{
 
@@ -20,23 +24,32 @@ class HospitalList extends StatefulWidget{
 
 class _HospitalList  extends State<HospitalList> {
 
+  File? imagePath;
+  String? imageName;
+  String? imageBytes;
+  ImagePicker imagePicker=ImagePicker();
+
   TextEditingController hospitalNameController=TextEditingController();
   TextEditingController cityController=TextEditingController();
   TextEditingController addressController=TextEditingController();
 
-  Future<void> uploadImageSql()async{
+  Future<void> InsertDataSql()async{
     try{
-      String uri="http://192.168.1.6:8080/Hospital/UploadImage.php";
+      String uri="http://192.168.1.6:8080/Hospital/PostHospital.php";
 
       var res=await http.post(Uri.parse(uri),body: {
-        "caption":"Current Image is Uploaded",
-        "name":imageName,
-        "data":imageData,
+        "imageName":imageName,
+        "imageBytes":imageBytes,
+        "hospitalName":hospitalNameController.text,
+        "city":cityController.text,
+        "address":addressController.text,
+
 
       });
 
       var response=jsonDecode(res.body);
       if(response["success"]==true){
+        Get.to(()=>kalkaalHospitals());
         print("Uploaded");
       }else{
         print("Error");
@@ -48,48 +61,25 @@ class _HospitalList  extends State<HospitalList> {
 
   }
 
-  File? imagePath;
-  String? imageName;
-  String? imageData;
-  ImagePicker imagePicker=ImagePicker();
 
-  Future<void> getImageSql()async{
+
+  Future<void> getImage()async{
     var getImage=await imagePicker.pickImage(source: ImageSource.gallery);
 
     setState(() {
       imagePath=File(getImage!.path);
       imageName=getImage.path.split("/").last;
-      imageData=base64Encode(imagePath!.readAsBytesSync());
+      imageBytes=base64Encode(imagePath!.readAsBytesSync());
       print("Image Path is "+imagePath.toString());
       print("Image Name is "+imageName.toString());
-      print("Image Data is is "+imageData.toString());
+      print("Image Data is is "+imageBytes.toString());
     });
 
 
 
   }
 
-  var picked;
-  PlatformFile? _imageFiles;
-  Future getImage()async{
-    final _picker = ImagePicker();
-    picked = await FilePicker.platform.pickFiles(
-      type: FileType.image,
-      allowMultiple: false,
-    );
-    File   _imageFile;
 
-    if (picked != null) {
-
-      setState(() {
-        _imageFiles = picked.files.first;
-
-
-        print("Image File Name is================>"+_imageFiles.toString());
-      });
-    }
-
-  }
 
 
 
@@ -115,7 +105,7 @@ class _HospitalList  extends State<HospitalList> {
               child: Center(
                 child: CupertinoButton(
                   onPressed: (){
-                    getImageSql();
+                    getImage();
                   },
                   child: CircleAvatar(
                     backgroundImage: imagePath!=null?  FileImage(imagePath!):null ,
@@ -145,7 +135,7 @@ class _HospitalList  extends State<HospitalList> {
                 width: 350,
                 child: TextFormField(
 
-                  controller:hospitalNameController,
+                  controller:cityController,
                   style: TextStyle(color: Colors.black),
                   decoration: InputDecoration(
                       border: OutlineInputBorder(),
@@ -175,7 +165,7 @@ class _HospitalList  extends State<HospitalList> {
                   height: 45,
                   width: 250,
                   child: ElevatedButton(
-                    onPressed: () => uploadImageSql(),
+                    onPressed: () => InsertDataSql(),
                     child: Text("Submit", style: TextStyle(color: Colors
                         .white),),
                     style: ElevatedButton.styleFrom(
