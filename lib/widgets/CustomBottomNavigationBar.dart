@@ -30,7 +30,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
           this.index = index;
           if(index==0){
             Navigator.push(context, MaterialPageRoute(builder: (context){
-              return HospitalList();
+              return AddHospital();
             }));
           }
 

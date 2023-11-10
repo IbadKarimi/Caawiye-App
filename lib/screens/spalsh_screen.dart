@@ -3,7 +3,7 @@ import 'package:caawiye_app/screens/homepages.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'kalkaalist.dart';
+import 'HospitalList.dart';
 class splash extends StatefulWidget {
   static const  String id= "splash.id";
   const splash({Key? key}) : super(key: key);

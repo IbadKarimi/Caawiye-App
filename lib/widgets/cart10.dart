@@ -15,7 +15,8 @@ class Category10 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       borderRadius: BorderRadius.circular(20),
-      child: InkWell(
+      child:
+      InkWell(
         onTap: () {
           // Get.to(kalkaalHospital10());
           Get.to(Taqasus7());

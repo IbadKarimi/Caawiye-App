@@ -1,7 +1,10 @@
 
-import 'package:caawiye_app/screens/doctor_list.dart';
+import 'package:caawiye_app/screens/AddDoctor.dart';
+import 'package:caawiye_app/screens/AddHospital.dart';
+import 'package:caawiye_app/screens/HospitalDepartments.dart';
+import 'package:caawiye_app/screens/DoctorList.dart';
 import 'package:caawiye_app/screens/homepages.dart';
-import 'package:caawiye_app/screens/kalkaalist.dart';
+import 'package:caawiye_app/screens/HospitalList.dart';
 import 'package:caawiye_app/screens/spalsh_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

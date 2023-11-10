@@ -5,7 +5,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:caawiye_app/screens/AddCategory.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -14,49 +13,46 @@ import 'package:image_picker/image_picker.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:http/http.dart' as http;
 
+import 'AddDoctor.dart';
 import 'HospitalList.dart';
 
-class AddHospital extends StatefulWidget{
+class  AddCategory extends StatefulWidget{
+
+  int hospitalId;
+  String hospitalName;
+  AddCategory({required this.hospitalId,required this.hospitalName});
 
 
   @override
-  State<AddHospital > createState() => _AddHospital ();
+  State<AddCategory > createState() => _AddCategory ();
 }
 
-class _AddHospital  extends State<AddHospital> {
-  late int id;
+class _AddCategory  extends State<AddCategory> {
+  late int categoryId;
+
   File? imagePath;
   String? imageName;
   String? imageBytes;
   ImagePicker imagePicker=ImagePicker();
 
-  TextEditingController hospitalNameController=TextEditingController();
-  TextEditingController cityController=TextEditingController();
-  TextEditingController addressController=TextEditingController();
+  TextEditingController categoryController=TextEditingController();
 
   Future<void> InsertDataSql(BuildContext context)async{
     try{
-      String uri="http://192.168.1.6:8080/Hospital/PostHospital.php";
+      String uri="http://192.168.1.6:8080/Hospital/PostCategoryData.php";
 
       var res=await http.post(Uri.parse(uri),body: {
+        "hospitalId":widget.hospitalId.toString(),
         "imageName":imageName,
         "imageBytes":imageBytes,
-        "hospitalName":hospitalNameController.text,
-        "city":cityController.text,
-        "address":addressController.text,
-
+        "categoryName":categoryController.text,
 
       });
 
       var response=jsonDecode(res.body);
       if(response["success"]==true){
-
-        id = response["id"];
-        print("==========================> id"+id.toString());
-
-
-        Get.to(()=>AddCategory(hospitalId: id, hospitalName: hospitalNameController.text));
-
+        categoryId = response["id"];
+        Get.to(()=>Doctor(categoryId: categoryId.toString(),hospitalName: widget.hospitalName,));
         print("Uploaded");
       }else{
         print("Error");
@@ -106,7 +102,7 @@ class _AddHospital  extends State<AddHospital> {
             SafeArea(
               child: Padding(
                 padding: const EdgeInsets.only(top:30),
-                child: Text("Add Hospital Data",style: TextStyle(color: Colors.black,fontSize: 24,fontWeight: FontWeight.w600),),
+                child: Text("Add Hospital Category",style: TextStyle(color: Colors.black,fontSize: 24,fontWeight: FontWeight.w600),),
               ),),
 
             SafeArea(
@@ -130,42 +126,15 @@ class _AddHospital  extends State<AddHospital> {
                 width: 350,
                 child: TextFormField(
 
-                  controller:hospitalNameController,
+                  controller:categoryController,
                   style: TextStyle(color: Colors.black),
                   decoration: InputDecoration(
                       border: OutlineInputBorder(),
-                      label: Text("Hospital Name"),
-                      prefixIcon: Icon(Icons.local_hospital)
+                      label: Text("Category Name"),
+                      prefixIcon: Icon(Icons.category)
 
                   ),)),
-            SizedBox(height: 10,),
-            Container(
-                height: 45,
-                width: 350,
-                child: TextFormField(
 
-                  controller:cityController,
-                  style: TextStyle(color: Colors.black),
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      label: Text("City Name"),
-                      prefixIcon: Icon(Icons.location_city)
-
-                  ),)),
-            SizedBox(height: 10,),
-            Container(
-                height: 45,
-                width: 350,
-                child: TextFormField(
-
-                  controller:addressController,
-                  style: TextStyle(color: Colors.black),
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      label: Text("Address"),
-                      prefixIcon: Icon(Icons.location_pin)
-
-                  ),)),
 
             SizedBox(height: 10,),
             Center(

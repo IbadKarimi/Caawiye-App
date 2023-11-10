@@ -359,7 +359,7 @@ class _Alihsaan3State extends State<Alihsaan3> {
         onPressed: () {
 
           Navigator.push(context, MaterialPageRoute(builder: (context){
-            return Doctor();
+            return Doctor(categoryId: '',hospitalName: "",);
           }));
         },
         child: Icon(Icons.add), // Icon to be displayed on the button
