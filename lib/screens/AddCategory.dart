@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:caawiye_app/screens/CategoryList.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -18,7 +19,7 @@ import 'HospitalList.dart';
 
 class  AddCategory extends StatefulWidget{
 
-  int hospitalId;
+  String hospitalId; // here i change int to string
   String hospitalName;
   AddCategory({required this.hospitalId,required this.hospitalName});
 
@@ -37,6 +38,8 @@ class _AddCategory  extends State<AddCategory> {
 
   TextEditingController categoryController=TextEditingController();
 
+
+
   Future<void> InsertDataSql(BuildContext context)async{
     try{
       String uri="http://192.168.1.6:8080/Hospital/PostCategoryData.php";
@@ -52,7 +55,8 @@ class _AddCategory  extends State<AddCategory> {
       var response=jsonDecode(res.body);
       if(response["success"]==true){
         categoryId = response["id"];
-        Get.to(()=>Doctor(categoryId: categoryId.toString(),hospitalName: widget.hospitalName,));
+       // Get.to(()=>Doctor(categoryId: categoryId.toString(),hospitalName: widget.hospitalName,));
+       Get.to(()=>HospitalDepartments(hospitalId: widget.hospitalId, hospitalName: widget.hospitalName));
         print("Uploaded");
       }else{
         print("Error");

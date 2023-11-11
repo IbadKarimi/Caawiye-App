@@ -40,17 +40,18 @@ class _Doctor extends State<Doctor> {
   TextEditingController specializationController=TextEditingController();
   TextEditingController feeController=TextEditingController();
 
-  Future<void> InsertDataSql(BuildContext context)async{
+  Future<void> InsertDataSql(BuildContext context,String hospitalName)async{
     try{
       String uri="http://192.168.1.6:8080/Hospital/PostDoctorData.php";
 
       var res=await http.post(Uri.parse(uri),body: {
-        "hospitalName":widget.hospitalName,
+
         "imageName":imageName,
         "imageBytes":imageBytes,
         "fullName":fullNameController.text,
         "specialization":specializationController.text,
         "experience":experienceController.text,
+        "hospitalName":widget.hospitalName,
         "fee":feeController.text,
         "categoryId":widget.categoryId,
 
@@ -169,6 +170,7 @@ class _Doctor extends State<Doctor> {
                     ),)),
 
 
+
               SizedBox(height: 10,),
               Container(
                   height: 45,
@@ -220,7 +222,7 @@ class _Doctor extends State<Doctor> {
                     height: 45,
                     width: 250,
                     child: ElevatedButton(
-                      onPressed: () => InsertDataSql(context),
+                      onPressed: () => InsertDataSql(context,widget.hospitalName),
                       child: Text("Submit", style: TextStyle(color: Colors
                           .white),),
                       style: ElevatedButton.styleFrom(

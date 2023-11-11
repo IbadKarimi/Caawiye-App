@@ -1,7 +1,7 @@
 
 import 'package:caawiye_app/screens/AddDoctor.dart';
 import 'package:caawiye_app/screens/AddHospital.dart';
-import 'package:caawiye_app/screens/HospitalDepartments.dart';
+import 'package:caawiye_app/screens/CategoryList.dart';
 import 'package:caawiye_app/screens/DoctorList.dart';
 import 'package:caawiye_app/screens/homepages.dart';
 import 'package:caawiye_app/screens/HospitalList.dart';

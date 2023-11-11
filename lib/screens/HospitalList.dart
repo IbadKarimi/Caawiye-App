@@ -1,7 +1,7 @@
 
 import 'dart:convert';
 import 'package:caawiye_app/screens/AddHospital.dart';
-import 'package:caawiye_app/screens/HospitalDepartments.dart';
+import 'package:caawiye_app/screens/CategoryList.dart';
 import 'package:caawiye_app/widgets/catogorywidget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import '../models/HospitalModel.dart';
 import '../widgets/hospitals_list_widgets.dart';
 import 'DoctorList.dart';
@@ -422,7 +423,8 @@ class _kalkaalHospitalsState extends State<kalkaalHospitals> {
                     borderRadius: BorderRadius.circular(10),
                     child: InkWell(
                       onTap: () {
-                        Get.to(HospitalDepartments( hospitalId: item["id"].toString(),));
+
+                        Get.to(HospitalDepartments( hospitalId: item["id"].toString(),hospitalName: item["hospitalName"].toString()));
                       },
                       borderRadius: BorderRadius.circular(10),
                       child: Container(

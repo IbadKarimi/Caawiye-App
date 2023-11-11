@@ -55,7 +55,8 @@ class _AddHospital  extends State<AddHospital> {
         print("==========================> id"+id.toString());
 
 
-        Get.to(()=>AddCategory(hospitalId: id, hospitalName: hospitalNameController.text));
+        //Get.to(()=>AddCategory(hospitalId: id.toString(), hospitalName: hospitalNameController.text));
+        Get.to(()=>kalkaalHospitals());
 
         print("Uploaded");
       }else{
