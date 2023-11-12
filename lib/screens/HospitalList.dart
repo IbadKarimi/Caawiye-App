@@ -33,7 +33,7 @@ class _kalkaalHospitalsState extends State<kalkaalHospitals> {
   List<dynamic> data=[];
   var networkImage;
   Future<List<dynamic>> fetchHospitalData() async {
-    var response = await http.get(Uri.parse('http://192.168.1.6:8080/Hospital/GetHospitalData.php'));
+    var response = await http.get(Uri.parse('http://192.168.1.4:8080/Hospital/GetHospitalData.php'));
 
     if (response.statusCode == 200) {
       // Parse the response body as a list of dynamic objects
@@ -457,7 +457,7 @@ class _kalkaalHospitalsState extends State<kalkaalHospitals> {
 
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(10),
-                                child: Image.network("http://192.168.1.6:8080/Hospital/"+item['imageName']),
+                                child: Image.network("http://192.168.1.4:8080/Hospital/"+item['imageName']),
                               ),
 
 

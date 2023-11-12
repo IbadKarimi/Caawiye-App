@@ -1,5 +1,6 @@
 
 import 'package:caawiye_app/screens/AddCategory.dart';
+import 'package:caawiye_app/screens/AddSliderImage.dart';
 import 'package:caawiye_app/screens/DoctorList.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -26,9 +27,11 @@ class _HospitalDepartments extends State<HospitalDepartments> {
   String? _hospitalId;
 
   List<dynamic> data=[];
+  List<dynamic> hospitalData=[];
+  List<dynamic> sliderImage=[];
   var networkImage;
   Future<List<dynamic>> fetchCategoryData() async {
-    var response1 = await http.get(Uri.parse('http://192.168.1.6:8080/Hospital/GetCategoryDataWithHId.php?hospitalId=${widget.hospitalId}'));
+    var response1 = await http.get(Uri.parse('http://192.168.1.4:8080/Hospital/GetCategoryDataWithHId.php?hospitalId=${widget.hospitalId}'));
     // var response = await http.get(Uri.parse('http://192.168.1.6:8080/Hospital/GetCategoryData.php'));
 
     if (response1.statusCode == 200) {
@@ -53,10 +56,9 @@ class _HospitalDepartments extends State<HospitalDepartments> {
       throw Exception('Failed to load data from the API. Status code: ${response1.statusCode}');
     }
   }
-  List<dynamic> hospitalData=[];
-// coursel image get from here
+
   Future<List<dynamic>> fetchHospitalData() async {
-    var response = await http.get(Uri.parse('http://192.168.1.6:8080/Hospital/GetHospitalData.php'));
+    var response = await http.get(Uri.parse('http://192.168.1.4:8080/Hospital/GetHospitalData.php'));
 
     if (response.statusCode == 200) {
       // Parse the response body as a list of dynamic objects
@@ -82,6 +84,26 @@ class _HospitalDepartments extends State<HospitalDepartments> {
   }
 
 
+  Future<List<dynamic>> fetchSliderImage() async {
+    var response1 = await http.get(Uri.parse('http://192.168.1.4:8080/Hospital/GetSliderImageHId.php?hospitalId=${widget.hospitalId}'));
+    // var response = await http.get(Uri.parse('http://192.168.1.6:8080/Hospital/GetCategoryData.php'));
+
+    if (response1.statusCode == 200) {
+      // Parse the response body as a list of dynamic objects
+      sliderImage =await jsonDecode(response1.body);
+
+
+
+
+      return sliderImage;
+
+    } else {
+      throw Exception('Failed to load data from the API. Status code: ${response1.statusCode}');
+    }
+  }
+
+
+
 
 
 
@@ -94,12 +116,14 @@ class _HospitalDepartments extends State<HospitalDepartments> {
 
     fetchHospitalData();
     fetchCategoryData();
+    fetchSliderImage();
 
     super.initState();
   }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       body: ListView(
         children: [
           Padding(
@@ -108,12 +132,12 @@ class _HospitalDepartments extends State<HospitalDepartments> {
               children: [
                 HomeCarousel(
                   images: [
-                    'https://i.imgur.com/Q7IxnQD.png',
+                   /* 'https://i.imgur.com/Q7IxnQD.png',
                     'https://i.imgur.com/6qgdV42.png',
                     'https://i.imgur.com/tSYmKvQ.png',
-                    'https://i.imgur.com/TunJzZJ.png',
-                    for (var item in hospitalData)
-                      "http://192.168.1.6:8080/Hospital/${item['imageName']}",
+                    'https://i.imgur.com/TunJzZJ.png',*/
+                    for (var item in sliderImage)
+                      "http://192.168.1.4:8080/Hospital/${item['imageName']}",
                   ],
                 ),
 
@@ -179,6 +203,38 @@ class _HospitalDepartments extends State<HospitalDepartments> {
 
             ],
           ),
+
+          InkWell(
+            onTap: (){
+              Get.to(()=>AddSliderImage(hospitalId: widget.hospitalId, hospitalName: widget.hospitalName));
+            },
+            child: Row(
+               mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+
+                Container(
+
+                  child: Row(
+                    children: [
+                      Padding( padding: EdgeInsets.only(left: 10) ,child:
+                      Text("Add Slider Images",style: TextStyle(color: Colors.blue,fontSize: 18),)),
+                      Padding(
+                        padding: const EdgeInsets.only(top:0),
+                        child: IconButton(onPressed: (){}, icon: Icon(Icons.add_circle)),
+                      ),
+                    ],
+                  ),
+                  margin: EdgeInsets.only(top:10,right: 10),
+                  decoration: BoxDecoration(
+                    border: Border.all(width: 1,color: Colors.grey),
+                    borderRadius: BorderRadius.circular(30)
+                  ),
+                ),
+
+
+              ],
+            ),
+          ),
           SizedBox(
 
             height:MediaQuery.of(context).size.height,
@@ -239,7 +295,7 @@ class _HospitalDepartments extends State<HospitalDepartments> {
                                     width: 50,
                                     height: 50,
                                     color: Colors.blue,
-                                    child: Image.network("http://192.168.1.6:8080/Hospital/" + item),
+                                    child: Image.network("http://192.168.1.4:8080/Hospital/" + item),
                                   ),
                                 ),
                               ),

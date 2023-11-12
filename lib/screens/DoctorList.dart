@@ -30,7 +30,7 @@ class _DoctorList extends State<DoctorList> {
   List<dynamic> data=[];
   var networkImage;
   Future<List<dynamic>> fetchDoctorData() async {
-    var response = await http.get(Uri.parse('http://192.168.1.6:8080/Hospital/GetDoctorData.php'));
+    var response = await http.get(Uri.parse('http://192.168.1.4:8080/Hospital/GetDoctorData.php'));
 
     if (response.statusCode == 200) {
       // Parse the response body as a list of dynamic objects
@@ -58,7 +58,7 @@ class _DoctorList extends State<DoctorList> {
   List<dynamic> hospitalData=[];
 // coursel image get from here
   Future<List<dynamic>> fetchHospitalData() async {
-    var response = await http.get(Uri.parse('http://192.168.1.6:8080/Hospital/GetHospitalData.php'));
+    var response = await http.get(Uri.parse('http://192.168.1.4:8080/Hospital/GetHospitalData.php'));
 
     if (response.statusCode == 200) {
       // Parse the response body as a list of dynamic objects
@@ -157,7 +157,7 @@ class _DoctorList extends State<DoctorList> {
                                 ),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(50),
-                                  child: Image.network("http://192.168.1.6:8080/Hospital/"+item['imageName'],fit: BoxFit.cover,),
+                                  child: Image.network("http://192.168.1.4:8080/Hospital/"+item['imageName'],fit: BoxFit.cover,),
                                 ),
                             ),
                             const SizedBox(width: 10),

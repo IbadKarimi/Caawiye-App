@@ -1,6 +1,8 @@
 
 
 
+
+
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
@@ -17,18 +19,20 @@ import 'package:http/http.dart' as http;
 import 'AddDoctor.dart';
 import 'HospitalList.dart';
 
-class  AddCategory extends StatefulWidget{
+class  AddSliderImage extends StatefulWidget{
 
-  String hospitalId; // here i change int to string
+  String hospitalId;
   String hospitalName;
-  AddCategory({required this.hospitalId,required this.hospitalName});
+  // here i change int to string
+
+  AddSliderImage({required this.hospitalId,required this.hospitalName});
 
 
   @override
-  State<AddCategory > createState() => _AddCategory ();
+  State<AddSliderImage > createState() => _AddSliderImage ();
 }
 
-class _AddCategory  extends State<AddCategory> {
+class _AddSliderImage  extends State<AddSliderImage> {
   late int categoryId;
 
   File? imagePath;
@@ -41,22 +45,23 @@ class _AddCategory  extends State<AddCategory> {
 
 
   Future<void> InsertDataSql(BuildContext context)async{
+    print("Hospital id is========="+widget.hospitalId.toString());
     try{
-      String uri="http://192.168.1.4:8080/Hospital/PostCategoryData.php";
+      String uri="http://192.168.1.4:8080/Hospital/PostSliderImage.php";
 
       var res=await http.post(Uri.parse(uri),body: {
         "hospitalId":widget.hospitalId.toString(),
         "imageName":imageName,
         "imageBytes":imageBytes,
-        "categoryName":categoryController.text,
+
 
       });
 
       var response=jsonDecode(res.body);
       if(response["success"]==true){
-        categoryId = response["id"];
-       // Get.to(()=>Doctor(categoryId: categoryId.toString(),hospitalName: widget.hospitalName,));
-       Get.to(()=>HospitalDepartments(hospitalId: widget.hospitalId, hospitalName: widget.hospitalName));
+
+        // Get.to(()=>Doctor(categoryId: categoryId.toString(),hospitalName: widget.hospitalName,));
+        Get.to(()=>HospitalDepartments(hospitalId: widget.hospitalId, hospitalName: widget.hospitalName));
         print("Uploaded");
       }else{
         print("Error");
@@ -106,7 +111,7 @@ class _AddCategory  extends State<AddCategory> {
             SafeArea(
               child: Padding(
                 padding: const EdgeInsets.only(top:30),
-                child: Text("Add Hospital Category",style: TextStyle(color: Colors.black,fontSize: 24,fontWeight: FontWeight.w600),),
+                child: Text("Add Slider Image",style: TextStyle(color: Colors.black,fontSize: 24,fontWeight: FontWeight.w600),),
               ),),
 
             SafeArea(
@@ -115,29 +120,38 @@ class _AddCategory  extends State<AddCategory> {
                   onPressed: (){
                     getImage();
                   },
-                  child: CircleAvatar(
-                    backgroundImage: imagePath!=null?  FileImage(imagePath!):null ,
-                    radius: 100,
-                    child:imagePath == null ? Icon(Icons.person):null,
-                  ),
+                  child: Container(
+                    width: 300,
+                    height: 200,
+    decoration: BoxDecoration(
+    image: imagePath != null
+    ? DecorationImage(
+    image: FileImage(imagePath!),
+    fit: BoxFit.cover,
+    )
+        : null,
+    ),
+    child: imagePath == null
+    ? Container(
+      width: 300,
+      height: 200,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+            border:Border.all(width: 1,color: Colors.grey)
+      ),
+      child: Center(
+      child: Icon(Icons.add, size: 48.0),
+      ),
+    )
+        : null,
+    ),
+    ),
 
                 ),
               ),
-            ),
 
-            Container(
-                height: 45,
-                width: 350,
-                child: TextFormField(
 
-                  controller:categoryController,
-                  style: TextStyle(color: Colors.black),
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      label: Text("Category Name"),
-                      prefixIcon: Icon(Icons.category)
 
-                  ),)),
 
 
             SizedBox(height: 10,),

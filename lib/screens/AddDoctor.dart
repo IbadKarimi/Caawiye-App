@@ -42,7 +42,7 @@ class _Doctor extends State<Doctor> {
 
   Future<void> InsertDataSql(BuildContext context,String hospitalName)async{
     try{
-      String uri="http://192.168.1.6:8080/Hospital/PostDoctorData.php";
+      String uri="http://192.168.1.4:8080/Hospital/PostDoctorData.php";
 
       var res=await http.post(Uri.parse(uri),body: {
 

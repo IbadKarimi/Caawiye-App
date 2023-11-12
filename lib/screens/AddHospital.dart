@@ -36,7 +36,7 @@ class _AddHospital  extends State<AddHospital> {
 
   Future<void> InsertDataSql(BuildContext context)async{
     try{
-      String uri="http://192.168.1.6:8080/Hospital/PostHospital.php";
+      String uri="http://192.168.1.4:8080/Hospital/PostHospital.php";
 
       var res=await http.post(Uri.parse(uri),body: {
         "imageName":imageName,
